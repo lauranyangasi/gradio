@@ -1,0 +1,47 @@
+#useful functions
+
+def load_ml_components(fp):
+    "load the ml component to reuse in app"
+    with open(fp, "rb") as f:
+        object = pickle.load(f)
+        return object
+    
+def interface_function(*args):
+    """
+    """
+
+#setup
+#variables and constants
+DIRPATH = os.path.dirname(os.path.realpath(__file__))
+ml_core_fp = os.path.join(DIRPATH, "assets", "ml", "ml_components.pkl")
+
+# execution
+ml_components_dict = load_ml_components(fp=ml_core_fp)
+print(f"\n[Info] ML components loaded: {list(ml_components_dict.keys())}")
+
+num_cols = ml_components_dict['num_cols']
+cat_cols = ml_components_dict['cat_cols']
+num_imputer = ml_components_dict['num_imputer']
+cat_imputer = ml_components_dict['cat_imputer']
+scaler = ml_components_dict['scaler']
+encoder = ml_components_dict['encoder']
+model = ml_components_dict['model']
+
+
+
+
+
+# interface
+inputs = [gr.Dropdown(elem_id=i) for i in range(4)] + [gr.Number(elem_id=i)
+                                                       for i in range(14)]
+
+demo = gr.Interface(
+    interface_function,
+    ['text'],
+    "number",
+    examples=[],
+)
+
+
+if __name__ == "_main_":
+    demo.launch(debug=True)
